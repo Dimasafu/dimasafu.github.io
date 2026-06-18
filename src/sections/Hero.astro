@@ -1,0 +1,88 @@
+---
+---
+
+<section
+  id="hero"
+  class="relative flex min-h-screen flex-col justify-center overflow-hidden px-6 pt-32 pb-24 lg:px-10"
+>
+  <div class="pointer-events-none absolute inset-0 -z-10">
+    <div class="absolute top-1/4 right-0 h-[500px] w-[500px] rounded-full bg-accent/3 blur-3xl" />
+    <div class="absolute bottom-1/4 left-0 h-[400px] w-[400px] rounded-full bg-accent/3 blur-3xl" />
+  </div>
+  <div class="container mx-auto">
+    <div class="max-w-4xl">
+      <div class="hero-label mb-8 flex items-center gap-3">
+        <span class="inline-flex h-px w-8 bg-accent/60" />
+        <span class="text-xs font-semibold uppercase tracking-[0.25em] text-accent">
+          Full Stack Developer
+        </span>
+      </div>
+      <h1
+        class="hero-name text-[clamp(3.5rem,12vw,10rem)] font-extrabold leading-[0.82] tracking-tighter text-on-surface"
+      >
+        Afutrade
+      </h1>
+      <div class="hero-desc mt-8 max-w-2xl">
+        <p class="text-base leading-relaxed text-on-surface-muted sm:text-lg md:text-xl">
+          Building scalable business applications with Laravel, MySQL,
+          TailwindCSS and modern web technologies.
+        </p>
+      </div>
+      <div class="hero-ctas mt-10 flex flex-wrap gap-4">
+        <a
+          href="#projects"
+          class="group inline-flex items-center gap-3 rounded-xl bg-on-surface px-7 py-3.5 text-sm font-medium text-surface transition-all duration-300 hover:opacity-90"
+        >
+          <span>View Projects</span>
+          <svg
+            class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+          >
+            <path d="M5 12h14M12 5l7 7-7 7" />
+          </svg>
+        </a>
+        <a
+          href="#contact"
+          class="group inline-flex items-center gap-3 rounded-xl border border-border px-7 py-3.5 text-sm font-medium text-on-surface transition-all duration-300 hover:bg-surface-secondary"
+        >
+          <span>Get in Touch</span>
+          <svg
+            class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+          >
+            <path d="M5 12h14M12 5l7 7-7 7" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2">
+    <div class="flex flex-col items-center gap-2">
+      <span class="text-[10px] font-semibold uppercase tracking-[0.2em] text-on-surface-subtle">
+        Scroll
+      </span>
+      <svg class="h-4 w-4 animate-bounce text-on-surface-subtle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+        <path d="M6 9l6 6 6-6" />
+      </svg>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { gsap } from 'gsap';
+
+  const tl = gsap.timeline({ defaults: { ease: 'power4.out' } });
+
+  tl.from('.hero-label', { y: 30, opacity: 0, duration: 0.8 })
+    .from('.hero-name', { y: 80, opacity: 0, duration: 1 }, '-=0.3')
+    .from('.hero-desc', { y: 40, opacity: 0, duration: 0.8 }, '-=0.4')
+    .from('.hero-ctas > a', { y: 30, opacity: 0, duration: 0.6, stagger: 0.15 }, '-=0.3');
+</script>

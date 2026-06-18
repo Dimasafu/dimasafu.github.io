@@ -1,0 +1,78 @@
+---
+
+---
+
+<footer class="border-t border-border">
+  <div class="container mx-auto px-6 py-16 lg:px-10">
+    <div class="grid gap-12 md:grid-cols-3">
+      <div class="space-y-4">
+        <a href="#" class="inline-flex items-center gap-1.5 text-lg font-semibold tracking-tight text-on-surface">
+          <span class="flex h-7 w-7 items-center justify-center rounded-lg bg-accent text-xs font-bold text-surface">
+            A
+          </span>
+          futrade
+        </a>
+        <p class="max-w-xs text-sm leading-relaxed text-on-surface-muted">
+          Full Stack Laravel Developer building scalable business applications.
+        </p>
+      </div>
+      <div class="space-y-4">
+        <h4 class="text-xs font-semibold uppercase tracking-widest text-on-surface-muted">
+          Navigation
+        </h4>
+        <ul class="space-y-3">
+          {['About', 'Projects', 'Stack', 'Experience', 'Contact'].map((label) => (
+            <li>
+              <a
+                href={`#${label.toLowerCase()}`}
+                class="text-sm text-on-surface-muted transition-colors duration-300 hover:text-on-surface"
+              >
+                {label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div class="space-y-4">
+        <h4 class="text-xs font-semibold uppercase tracking-widest text-on-surface-muted">
+          Connect
+        </h4>
+        <ul class="space-y-3">
+          {[
+            { label: 'GitHub', href: 'https://github.com/afutrade' },
+            { label: 'LinkedIn', href: 'https://linkedin.com/in/afutrade' },
+            { label: 'hello@afutrade.dev', href: 'mailto:hello@afutrade.dev' },
+          ].map((link) => (
+            <li>
+              <a
+                href={link.href}
+                target={link.href.startsWith('http') ? '_blank' : undefined}
+                rel={link.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                class="text-sm text-on-surface-muted transition-colors duration-300 hover:text-on-surface"
+              >
+                {link.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+    <div class="mt-16 flex flex-col items-center justify-between gap-4 border-t border-border pt-8 sm:flex-row">
+      <p class="text-xs text-on-surface-subtle">
+        &copy; {new Date().getFullYear()} Afutrade. All rights reserved.
+      </p>
+      <button id="back-to-top" class="group flex items-center gap-2 text-xs font-medium text-on-surface-muted transition-colors duration-300 hover:text-on-surface">
+        Back to top
+        <svg class="h-3.5 w-3.5 transition-transform duration-300 group-hover:-translate-y-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M18 15l-6-6-6 6" />
+        </svg>
+      </button>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('back-to-top')?.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+</script>

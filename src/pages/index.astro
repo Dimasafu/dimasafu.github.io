@@ -1,0 +1,87 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import Hero from '../sections/Hero.astro';
+import About from '../sections/About.astro';
+import FeaturedProjects from '../sections/FeaturedProjects.astro';
+import TechStack from '../sections/TechStack.astro';
+import Experience from '../sections/Experience.astro';
+import Contact from '../sections/Contact.astro';
+---
+
+<BaseLayout title="Afutrade — Full Stack Laravel Developer" description="Portfolio of Afutrade, a Full Stack Laravel Developer building scalable business applications.">
+  <Navbar />
+  <main>
+    <Hero />
+    <About />
+    <FeaturedProjects />
+    <TechStack />
+    <Experience />
+    <Contact />
+  </main>
+  <Footer />
+</BaseLayout>
+
+<script>
+  import Lenis from 'lenis';
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const lenis = new Lenis({
+    duration: 1.2,
+    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    orientation: 'vertical',
+    smoothWheel: true,
+  });
+
+  lenis.on('scroll', ScrollTrigger.update);
+
+  gsap.ticker.add((time) => {
+    lenis.raf(time * 1000);
+  });
+  gsap.ticker.lagSmoothing(0);
+
+  document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+    anchor.addEventListener('click', (e) => {
+      e.preventDefault();
+      const target = document.querySelector(anchor.getAttribute('href'));
+      if (target) {
+        lenis.scrollTo(target, { offset: -80, duration: 1.4 });
+      }
+    });
+  });
+
+  gsap.utils.toArray('section').forEach((section, i) => {
+    const isLast = i === document.querySelectorAll('section').length - 1;
+    if (!isLast) {
+      ScrollTrigger.create({
+        trigger: section,
+        start: 'top bottom',
+        end: 'bottom top',
+        onUpdate: (self) => {
+          const progress = self.progress;
+          const next = document.querySelectorAll('section')[i + 1];
+          if (next && progress > 0.5) {
+            gsap.set(section, { opacity: 1 - (progress - 0.5) * 2 });
+          } else {
+            gsap.set(section, { opacity: 1 });
+          }
+        },
+      });
+    }
+  });
+
+  ScrollTrigger.create({
+    trigger: '#hero',
+    start: 'top top',
+    end: 'bottom top',
+    onUpdate: (self) => {
+      gsap.set('#navbar', { opacity: 1 - self.progress * 0.5 });
+    },
+    onLeave: () => gsap.set('#navbar', { opacity: 1 }),
+    onEnterBack: () => gsap.set('#navbar', { opacity: 1 }),
+  });
+</script>

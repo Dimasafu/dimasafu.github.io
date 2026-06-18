@@ -1,0 +1,31 @@
+---
+export interface Props {
+  index?: string;
+  title: string;
+  subtitle?: string;
+  alignment?: 'left' | 'center';
+}
+
+const { index, title, subtitle, alignment = 'left' } = Astro.props;
+---
+
+<div
+  class={`section-heading mb-16 md:mb-20 ${alignment === 'center' ? 'text-center' : ''}`}
+>
+  {index && (
+    <span class="mb-4 block font-mono text-xs font-medium tracking-[0.2em] text-accent">
+      {index}
+    </span>
+  )}
+  <h2 class="text-4xl font-bold leading-[1.05] tracking-tight text-on-surface sm:text-5xl md:text-6xl lg:text-7xl">
+    {title}
+  </h2>
+  {subtitle && (
+    <p class="mt-5 max-w-2xl text-base leading-relaxed text-on-surface-muted sm:text-lg">
+      {subtitle}
+    </p>
+  )}
+  <div
+    class={`mt-8 h-px w-16 bg-accent/60 ${alignment === 'center' ? 'mx-auto' : ''}`}
+  />
+</div>

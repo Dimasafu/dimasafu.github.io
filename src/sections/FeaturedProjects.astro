@@ -1,0 +1,99 @@
+---
+import SectionHeading from '../components/SectionHeading.astro';
+
+interface Project {
+  title: string;
+  description: string;
+  tags: string[];
+  gradient: string;
+}
+
+const projects: Project[] = [
+  {
+    title: 'Gym Management System',
+    description:
+      'A comprehensive platform for managing gym operations including member registrations, subscription billing, class scheduling, and attendance tracking with real-time analytics.',
+    tags: ['Laravel', 'Livewire', 'MySQL', 'TailwindCSS'],
+    gradient: 'from-blue-500/10 via-blue-400/5 to-transparent',
+  },
+  {
+    title: 'Trading Journal',
+    description:
+      'A personal trading analytics tool that helps traders log, review, and optimize their strategies with detailed performance metrics, charts, and pattern recognition.',
+    tags: ['Laravel', 'AlpineJS', 'MySQL', 'Charts'],
+    gradient: 'from-emerald-500/10 via-emerald-400/5 to-transparent',
+  },
+  {
+    title: 'Inventory Management System',
+    description:
+      'An end-to-end inventory solution with real-time stock tracking, multi-warehouse support, purchase order management, barcode scanning, and automated reorder alerts.',
+    tags: ['Laravel', 'Livewire', 'MySQL', 'Docker'],
+    gradient: 'from-violet-500/10 via-violet-400/5 to-transparent',
+  },
+];
+---
+
+<section
+  id="projects"
+  class="relative overflow-hidden px-6 py-28 md:py-36 lg:px-10"
+>
+  <div class="container mx-auto">
+    <SectionHeading
+      index="02"
+      title="Featured Projects"
+      subtitle="Selected work I've delivered."
+    />
+    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {projects.map((project, i) => (
+        <article
+          class="project-card group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-surface transition-all duration-500 hover:border-accent/20 hover:shadow-2xl hover:shadow-accent/5"
+        >
+          <div class={`relative h-48 bg-gradient-to-br ${project.gradient}`}>
+            <div class="absolute inset-0 bg-gradient-to-t from-surface to-transparent" />
+            <div class="absolute top-5 left-5 flex h-10 w-10 items-center justify-center rounded-xl bg-surface/60 backdrop-blur-sm">
+              <span class="text-sm font-bold text-accent">
+                {(i + 1).toString().padStart(2, '0')}
+              </span>
+            </div>
+          </div>
+          <div class="flex flex-1 flex-col p-7">
+            <h3 class="mb-3 text-lg font-semibold tracking-tight text-on-surface transition-colors duration-300 group-hover:text-accent">
+              {project.title}
+            </h3>
+            <p class="mb-6 flex-1 text-sm leading-relaxed text-on-surface-muted">
+              {project.description}
+            </p>
+            <div class="flex flex-wrap gap-2">
+              {project.tags.map((tag) => (
+                <span class="rounded-full border border-border bg-surface-secondary/50 px-3 py-1 text-[11px] font-medium text-on-surface-muted transition-colors duration-300 group-hover:border-accent/20 group-hover:text-on-surface">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </div>
+          <div class="absolute right-5 bottom-5 flex h-8 w-8 items-center justify-center rounded-full border border-border opacity-0 transition-all duration-300 group-hover:border-accent/30 group-hover:opacity-100 group-hover:translate-x-0 translate-x-2">
+            <svg class="h-3.5 w-3.5 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  gsap.from('.project-card', {
+    scrollTrigger: { trigger: '#projects', start: 'top 75%' },
+    y: 60,
+    opacity: 0,
+    duration: 0.8,
+    stagger: 0.15,
+    ease: 'power3.out',
+  });
+</script>
