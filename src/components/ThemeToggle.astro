@@ -4,11 +4,11 @@
 
 <button
   id="theme-toggle"
-  class="relative z-40 flex h-10 w-10 cursor-pointer items-center justify-center rounded-xl border border-border bg-transparent transition-all duration-300 hover:bg-surface-secondary"
+  class="relative flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-transparent text-on-surface-secondary transition-all duration-300 hover:bg-surface-secondary hover:text-on-surface"
   aria-label="Toggle theme"
 >
   <svg
-    class="sun-icon h-5 w-5 text-on-surface transition-all duration-500"
+    class="sun-icon h-4 w-4"
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
@@ -19,7 +19,7 @@
     <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
   </svg>
   <svg
-    class="moon-icon absolute h-5 w-5 text-on-surface transition-all duration-500"
+    class="moon-icon absolute h-4 w-4"
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
@@ -34,6 +34,9 @@
   const toggle = document.getElementById('theme-toggle');
   const sun = toggle.querySelector('.sun-icon');
   const moon = toggle.querySelector('.moon-icon');
+
+  const transition = 'all 0.5s cubic-bezier(0.16,1,0.3,1)';
+  [sun, moon].forEach((el) => Object.assign(el.style, { transition }));
 
   function updateIcons(theme) {
     if (theme === 'dark') {
@@ -52,8 +55,6 @@
   sun.style.opacity = '1';
   moon.style.opacity = '0';
   moon.style.transform = 'rotate(90deg) scale(0.5)';
-  Object.assign(sun.style, { transition: 'all 0.5s cubic-bezier(0.16,1,0.3,1)' });
-  Object.assign(moon.style, { transition: 'all 0.5s cubic-bezier(0.16,1,0.3,1)' });
 
   updateIcons(window.__theme);
 

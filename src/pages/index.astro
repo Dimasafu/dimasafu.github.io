@@ -4,20 +4,23 @@ import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import Hero from '../sections/Hero.astro';
 import About from '../sections/About.astro';
+import Experience from '../sections/Experience.astro';
 import FeaturedProjects from '../sections/FeaturedProjects.astro';
 import TechStack from '../sections/TechStack.astro';
-import Experience from '../sections/Experience.astro';
 import Contact from '../sections/Contact.astro';
 ---
 
-<BaseLayout title="Afutrade — Full Stack Laravel Developer" description="Portfolio of Afutrade, a Full Stack Laravel Developer building scalable business applications.">
+<BaseLayout
+  title="Dimas Aulia Fadhil — Full Stack Laravel Developer & Digital Transformation Officer"
+  description="Portfolio of Dimas Aulia Fadhil, Full Stack Laravel Developer and Digital Transformation Officer building scalable business solutions."
+>
   <Navbar />
-  <main>
+  <main class="bg-grid">
     <Hero />
     <About />
+    <Experience />
     <FeaturedProjects />
     <TechStack />
-    <Experience />
     <Contact />
   </main>
   <Footer />
@@ -54,24 +57,60 @@ import Contact from '../sections/Contact.astro';
     });
   });
 
-  gsap.utils.toArray('section').forEach((section, i) => {
-    const isLast = i === document.querySelectorAll('section').length - 1;
-    if (!isLast) {
-      ScrollTrigger.create({
-        trigger: section,
+  document.querySelectorAll('[data-parallax]').forEach((el) => {
+    const speed = parseFloat(el.dataset.speed) || 0.5;
+    gsap.to(el, {
+      y: () => (1 - speed) * 100,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: el,
         start: 'top bottom',
         end: 'bottom top',
-        onUpdate: (self) => {
-          const progress = self.progress;
-          const next = document.querySelectorAll('section')[i + 1];
-          if (next && progress > 0.5) {
-            gsap.set(section, { opacity: 1 - (progress - 0.5) * 2 });
-          } else {
-            gsap.set(section, { opacity: 1 });
-          }
-        },
+        scrub: true,
+      },
+    });
+  });
+
+  document.querySelectorAll('[data-reveal]').forEach((el, i) => {
+    gsap.from(el, {
+      y: 60,
+      opacity: 0,
+      duration: 1,
+      ease: 'power3.out',
+      scrollTrigger: {
+        trigger: el,
+        start: 'top 85%',
+        toggleActions: 'play none none reverse',
+      },
+      delay: i * 0.1,
+    });
+  });
+
+  const magneticButtons = document.querySelectorAll('[data-magnetic]');
+  magneticButtons.forEach((btn) => {
+    const inner = btn.querySelector('.magnetic-inner');
+    if (!inner) return;
+
+    btn.addEventListener('mousemove', (e) => {
+      const rect = btn.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      gsap.to(inner, {
+        x: x * 0.2,
+        y: y * 0.2,
+        duration: 0.6,
+        ease: 'power2.out',
       });
-    }
+    });
+
+    btn.addEventListener('mouseleave', () => {
+      gsap.to(inner, {
+        x: 0,
+        y: 0,
+        duration: 0.6,
+        ease: 'elastic.out(1, 0.3)',
+      });
+    });
   });
 
   ScrollTrigger.create({
@@ -79,7 +118,7 @@ import Contact from '../sections/Contact.astro';
     start: 'top top',
     end: 'bottom top',
     onUpdate: (self) => {
-      gsap.set('#navbar', { opacity: 1 - self.progress * 0.5 });
+      gsap.set('#navbar', { opacity: 1 - self.progress * 0.4 });
     },
     onLeave: () => gsap.set('#navbar', { opacity: 1 }),
     onEnterBack: () => gsap.set('#navbar', { opacity: 1 }),

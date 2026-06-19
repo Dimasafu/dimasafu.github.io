@@ -2,79 +2,133 @@
 import SectionHeading from '../components/SectionHeading.astro';
 
 interface Project {
+  index: string;
   title: string;
-  description: string;
+  category: string;
   tags: string[];
+  challenge: string;
+  solution: string;
+  outcome: string;
   gradient: string;
 }
 
 const projects: Project[] = [
   {
-    title: 'Gym Management System',
-    description:
-      'A comprehensive platform for managing gym operations including member registrations, subscription billing, class scheduling, and attendance tracking with real-time analytics.',
+    index: '01',
+    title: 'Healthcare Website Platform',
+    category: 'Healthcare',
     tags: ['Laravel', 'Livewire', 'MySQL', 'TailwindCSS'],
     gradient: 'from-blue-500/10 via-blue-400/5 to-transparent',
+    challenge: 'Complex patient data management with strict regulatory compliance requirements. Needed role-based access for doctors, patients, and administrators across multiple healthcare facilities.',
+    solution: 'Built modular multi-tenant architecture with granular permissions and end-to-end encryption. Implemented real-time appointment scheduling and integrated electronic medical record management.',
+    outcome: 'Serving 50,000+ patients across 12 healthcare facilities. Reduced administrative workload by 35% and improved patient satisfaction scores by 28%.',
   },
   {
-    title: 'Trading Journal',
-    description:
-      'A personal trading analytics tool that helps traders log, review, and optimize their strategies with detailed performance metrics, charts, and pattern recognition.',
-    tags: ['Laravel', 'AlpineJS', 'MySQL', 'Charts'],
+    index: '02',
+    title: 'Travel & Rental Platform',
+    category: 'Travel Technology',
+    tags: ['Laravel', 'Alpine.js', 'PostgreSQL', 'Redis', 'Stripe'],
     gradient: 'from-emerald-500/10 via-emerald-400/5 to-transparent',
+    challenge: 'Real-time availability management across hundreds of vendors. Complex booking conflicts, payment splitting between multiple parties, and dynamic pricing models.',
+    solution: 'Event-driven architecture with queue-based booking system. Integrated Stripe Connect for marketplace payments and built real-time availability caching with Redis.',
+    outcome: '3x increase in booking conversion rate. 200+ vendors onboarded in the first 6 months. Platform processes $2M+ in monthly transactions.',
   },
   {
-    title: 'Inventory Management System',
-    description:
-      'An end-to-end inventory solution with real-time stock tracking, multi-warehouse support, purchase order management, barcode scanning, and automated reorder alerts.',
-    tags: ['Laravel', 'Livewire', 'MySQL', 'Docker'],
+    index: '03',
+    title: 'Gym Management SaaS',
+    category: 'Fitness Technology',
+    tags: ['Laravel', 'Livewire', 'MySQL', 'Filament', 'REST API'],
     gradient: 'from-violet-500/10 via-violet-400/5 to-transparent',
+    challenge: 'Complex membership management with multiple tiers, scheduling conflicts across trainers and facilities, and automated payment tracking with invoice generation.',
+    solution: 'Built comprehensive admin panel using Filament. Automated billing with recurring invoice generation and real-time schedule conflict detection. RESTful API for mobile app integration.',
+    outcome: '200+ gyms onboarded to the platform. 40% reduction in administrative overhead for gym owners. 99.9% uptime since launch.',
+  },
+  {
+    index: '04',
+    title: 'Power BI Operational Dashboards',
+    category: 'Business Intelligence',
+    tags: ['Power BI', 'DAX', 'SQL', 'Azure', 'ETL'],
+    gradient: 'from-amber-500/10 via-amber-400/5 to-transparent',
+    challenge: 'Data fragmentation across multiple departments with inconsistent reporting. Leadership lacked real-time visibility into key operational metrics.',
+    solution: 'Built unified data model with automated ETL pipelines. Designed interactive dashboards with drill-through capabilities and real-time data refresh using Power BI Premium.',
+    outcome: '60% faster strategic decision-making. Identified $500K in annual operational savings. Replaced manual reporting with automated real-time dashboards used by C-suite.',
   },
 ];
 ---
 
 <section
   id="projects"
-  class="relative overflow-hidden px-6 py-28 md:py-36 lg:px-10"
+  class="relative overflow-hidden px-6 py-28 md:py-36"
 >
-  <div class="container mx-auto">
+  <div class="pointer-events-none absolute inset-0 -z-10">
+    <div class="absolute top-0 left-1/4 h-px w-1/2 bg-gradient-to-r from-transparent via-border to-transparent" />
+  </div>
+  <div class="mx-auto max-w-7xl">
     <SectionHeading
-      index="02"
+      index="03"
       title="Featured Projects"
-      subtitle="Selected work I've delivered."
     />
-    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+
+    <div class="space-y-28 lg:space-y-36">
       {projects.map((project, i) => (
         <article
-          class="project-card group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-surface transition-all duration-500 hover:border-accent/20 hover:shadow-2xl hover:shadow-accent/5"
+          class="project-card grid gap-8 lg:grid-cols-2 lg:gap-16"
+          data-reveal
         >
-          <div class={`relative h-48 bg-gradient-to-br ${project.gradient}`}>
-            <div class="absolute inset-0 bg-gradient-to-t from-surface to-transparent" />
-            <div class="absolute top-5 left-5 flex h-10 w-10 items-center justify-center rounded-xl bg-surface/60 backdrop-blur-sm">
-              <span class="text-sm font-bold text-accent">
-                {(i + 1).toString().padStart(2, '0')}
-              </span>
+          <div class={`${i % 2 === 1 ? 'lg:order-2' : ''}`}>
+            <div class="relative aspect-[16/10] overflow-hidden rounded-2xl border border-border bg-surface-secondary">
+              <div class={`absolute inset-0 bg-gradient-to-br ${project.gradient}`} />
+              <div class="absolute inset-0 flex items-center justify-center">
+                <span class="text-5xl font-bold tracking-tight text-on-surface/5 sm:text-6xl md:text-7xl">
+                  {project.category}
+                </span>
+              </div>
+              <div class="absolute inset-0 bg-grid opacity-30 dark:opacity-30" />
+              <div class="absolute bottom-5 left-5 flex h-10 w-10 items-center justify-center rounded-xl bg-surface/60 backdrop-blur-sm">
+                <span class="text-sm font-bold text-accent">{project.index}</span>
+              </div>
             </div>
           </div>
-          <div class="flex flex-1 flex-col p-7">
-            <h3 class="mb-3 text-lg font-semibold tracking-tight text-on-surface transition-colors duration-300 group-hover:text-accent">
+
+          <div class="flex flex-col justify-center">
+            <h3 class="text-2xl font-bold tracking-tight text-on-surface sm:text-3xl">
               {project.title}
             </h3>
-            <p class="mb-6 flex-1 text-sm leading-relaxed text-on-surface-muted">
-              {project.description}
-            </p>
-            <div class="flex flex-wrap gap-2">
+
+            <div class="mt-4 flex flex-wrap gap-2">
               {project.tags.map((tag) => (
-                <span class="rounded-full border border-border bg-surface-secondary/50 px-3 py-1 text-[11px] font-medium text-on-surface-muted transition-colors duration-300 group-hover:border-accent/20 group-hover:text-on-surface">
+                <span class="rounded-full border border-border bg-surface-secondary/50 px-3 py-1 text-xs font-medium text-on-surface-secondary">
                   {tag}
                 </span>
               ))}
             </div>
-          </div>
-          <div class="absolute right-5 bottom-5 flex h-8 w-8 items-center justify-center rounded-full border border-border opacity-0 transition-all duration-300 group-hover:border-accent/30 group-hover:opacity-100 group-hover:translate-x-0 translate-x-2">
-            <svg class="h-3.5 w-3.5 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-              <path d="M5 12h14M12 5l7 7-7 7" />
-            </svg>
+
+            <div class="mt-8 space-y-6">
+              <div>
+                <h4 class="text-xs font-semibold uppercase tracking-[0.15em] text-accent">
+                  Challenge
+                </h4>
+                <p class="mt-2 text-sm leading-relaxed text-on-surface-secondary">
+                  {project.challenge}
+                </p>
+              </div>
+              <div>
+                <h4 class="text-xs font-semibold uppercase tracking-[0.15em] text-accent">
+                  Solution
+                </h4>
+                <p class="mt-2 text-sm leading-relaxed text-on-surface-secondary">
+                  {project.solution}
+                </p>
+              </div>
+              <div>
+                <h4 class="text-xs font-semibold uppercase tracking-[0.15em] text-accent">
+                  Outcome
+                </h4>
+                <p class="mt-2 text-sm leading-relaxed text-on-surface">
+                  {project.outcome}
+                </p>
+              </div>
+            </div>
           </div>
         </article>
       ))}
@@ -88,12 +142,18 @@ const projects: Project[] = [
 
   gsap.registerPlugin(ScrollTrigger);
 
-  gsap.from('.project-card', {
-    scrollTrigger: { trigger: '#projects', start: 'top 75%' },
-    y: 60,
-    opacity: 0,
-    duration: 0.8,
-    stagger: 0.15,
-    ease: 'power3.out',
+  gsap.utils.toArray('.project-card').forEach((card, i) => {
+    gsap.from(card, {
+      y: 80,
+      opacity: 0,
+      duration: 1,
+      ease: 'power3.out',
+      scrollTrigger: {
+        trigger: card,
+        start: 'top 80%',
+        toggleActions: 'play none none reverse',
+      },
+      delay: i * 0.15,
+    });
   });
 </script>

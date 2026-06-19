@@ -3,69 +3,62 @@ import ThemeToggle from './ThemeToggle.astro';
 
 const navLinks = [
   { label: 'About', href: '#about' },
-  { label: 'Projects', href: '#projects' },
-  { label: 'Stack', href: '#stack' },
   { label: 'Experience', href: '#experience' },
+  { label: 'Projects', href: '#projects' },
+  { label: 'Tech', href: '#tech' },
   { label: 'Contact', href: '#contact' },
 ];
 ---
 
-<nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500">
-  <div class="container mx-auto flex items-center justify-between px-6 py-5 lg:px-10">
+<nav
+  id="navbar"
+  class="fixed top-0 left-0 right-0 z-50 transition-all duration-500"
+>
+  <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
     <a
       href="#"
-      class="group relative text-lg font-semibold tracking-tight text-on-surface"
+      class="text-sm font-medium tracking-tight text-on-surface transition-opacity hover:opacity-70"
     >
-      <span class="inline-flex items-center gap-1.5">
-        <span class="flex h-7 w-7 items-center justify-center rounded-lg bg-accent text-xs font-bold text-surface transition-transform duration-300 group-hover:scale-105">
-          A
-        </span>
-        <span class="transition-opacity duration-300 group-hover:opacity-70">
-          futrade
-        </span>
-      </span>
+      Dimas Aulia Fadhil
     </a>
-    <div class="flex items-center gap-3">
-      <ul class="hidden items-center gap-1 md:flex">
-        {navLinks.map((link) => (
-          <li>
-            <a
-              href={link.href}
-              data-nav={link.href.slice(1)}
-              class="nav-link relative rounded-lg px-4 py-2 text-sm font-medium text-on-surface-muted transition-all duration-300 hover:text-on-surface"
-            >
-              {link.label}
-            </a>
-          </li>
-        ))}
-      </ul>
-      <div class="flex items-center gap-2">
-        <button
-          id="menu-toggle"
-          class="relative z-40 flex h-10 w-10 cursor-pointer items-center justify-center rounded-xl border border-border bg-transparent transition-all duration-300 hover:bg-surface-secondary md:hidden"
-          aria-label="Toggle menu"
+    <div class="hidden items-center gap-8 md:flex">
+      {navLinks.map((link) => (
+        <a
+          href={link.href}
+          data-nav={link.href.slice(1)}
+          class="nav-link text-sm text-on-surface-secondary transition-colors duration-300 hover:text-on-surface"
         >
-          <svg class="menu-open h-5 w-5 text-on-surface" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-            <path d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-          <svg class="menu-close hidden h-5 w-5 text-on-surface" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-            <path d="M18 6L6 18M6 6l12 12" />
-          </svg>
-        </button>
-        <ThemeToggle />
-      </div>
+          {link.label}
+        </a>
+      ))}
+      <ThemeToggle />
+    </div>
+    <div class="flex items-center gap-3 md:hidden">
+      <ThemeToggle />
+      <button
+        id="menu-toggle"
+        class="relative z-50 flex h-9 w-9 items-center justify-center"
+        aria-label="Toggle menu"
+      >
+        <svg class="menu-open h-5 w-5 text-on-surface" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+          <path d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+        <svg class="menu-close hidden h-5 w-5 text-on-surface" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+          <path d="M18 6L6 18M6 6l12 12" />
+        </svg>
+      </button>
     </div>
   </div>
 
   <div
     id="mobile-menu"
-    class="fixed inset-0 z-30 flex translate-x-full flex-col items-center justify-center gap-10 bg-surface transition-transform duration-500 ease-out-expo"
+    class="fixed inset-0 z-40 flex translate-x-full flex-col items-center justify-center gap-10 bg-surface/95 backdrop-blur-xl transition-transform duration-500 ease-out-expo"
   >
     {navLinks.map((link) => (
       <a
         href={link.href}
         data-nav-mobile={link.href.slice(1)}
-        class="text-4xl font-semibold tracking-tight text-on-surface transition-colors duration-300 hover:text-accent"
+        class="text-3xl font-semibold tracking-tight text-on-surface transition-colors hover:text-accent"
       >
         {link.label}
       </a>
@@ -77,44 +70,45 @@ const navLinks = [
   const navbar = document.getElementById('navbar');
   const menuToggle = document.getElementById('menu-toggle');
   const mobileMenu = document.getElementById('mobile-menu');
-  const menuOpen = menuToggle.querySelector('.menu-open');
-  const menuClose = menuToggle.querySelector('.menu-close');
-  const navLinks = navbar.querySelectorAll('.nav-link');
-
+  const menuOpen = menuToggle?.querySelector('.menu-open');
+  const menuClose = menuToggle?.querySelector('.menu-close');
+  const navLinks = navbar?.querySelectorAll('.nav-link');
   const sections = document.querySelectorAll('section[id]');
 
-  menuToggle.addEventListener('click', () => {
-    const isOpen = !mobileMenu.classList.contains('translate-x-full');
-    if (isOpen) {
-      mobileMenu.classList.add('translate-x-full');
-      menuOpen.classList.remove('hidden');
-      menuClose.classList.add('hidden');
-    } else {
-      mobileMenu.classList.remove('translate-x-full');
-      menuOpen.classList.add('hidden');
-      menuClose.classList.remove('hidden');
-    }
-  });
-
-  mobileMenu.querySelectorAll('a').forEach((link) => {
-    link.addEventListener('click', () => {
-      mobileMenu.classList.add('translate-x-full');
-      menuOpen.classList.remove('hidden');
-      menuClose.classList.add('hidden');
+  if (menuToggle && mobileMenu) {
+    menuToggle.addEventListener('click', () => {
+      const isOpen = !mobileMenu.classList.contains('translate-x-full');
+      if (isOpen) {
+        mobileMenu.classList.add('translate-x-full');
+        menuOpen?.classList.remove('hidden');
+        menuClose?.classList.add('hidden');
+      } else {
+        mobileMenu.classList.remove('translate-x-full');
+        menuOpen?.classList.add('hidden');
+        menuClose?.classList.remove('hidden');
+      }
     });
-  });
+
+    mobileMenu.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.add('translate-x-full');
+        menuOpen?.classList.remove('hidden');
+        menuClose?.classList.add('hidden');
+      });
+    });
+  }
 
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           const id = entry.target.getAttribute('id');
-          navLinks.forEach((link) => {
-            link.classList.remove('text-on-surface', 'bg-accent-glow');
-            link.classList.add('text-on-surface-muted');
+          navLinks?.forEach((link) => {
+            link.classList.remove('text-on-surface');
+            link.classList.add('text-on-surface-secondary');
             if (link.dataset.nav === id) {
-              link.classList.remove('text-on-surface-muted');
-              link.classList.add('text-on-surface', 'bg-accent-glow');
+              link.classList.remove('text-on-surface-secondary');
+              link.classList.add('text-on-surface');
             }
           });
         }
@@ -126,11 +120,22 @@ const navLinks = [
   sections.forEach((section) => observer.observe(section));
 
   window.addEventListener('scroll', () => {
+    if (!navbar) return;
     if (window.scrollY > 50) {
-      navbar.classList.add('bg-surface/85', 'backdrop-blur-xl', 'shadow-xs', 'border-b', 'border-border');
+      navbar.classList.add(
+        'bg-surface/80',
+        'backdrop-blur-xl',
+        'border-b',
+        'border-border'
+      );
       navbar.classList.remove('bg-transparent', 'border-transparent');
     } else {
-      navbar.classList.remove('bg-surface/85', 'backdrop-blur-xl', 'shadow-xs', 'border-b', 'border-border');
+      navbar.classList.remove(
+        'bg-surface/80',
+        'backdrop-blur-xl',
+        'border-b',
+        'border-border'
+      );
       navbar.classList.add('bg-transparent', 'border-transparent');
     }
   });

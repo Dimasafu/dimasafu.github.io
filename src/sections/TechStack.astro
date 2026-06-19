@@ -1,41 +1,60 @@
 ---
 import SectionHeading from '../components/SectionHeading.astro';
 
-const techs = [
-  { name: 'Laravel', category: 'Framework' },
-  { name: 'PHP', category: 'Language' },
-  { name: 'MySQL', category: 'Database' },
-  { name: 'TailwindCSS', category: 'Frontend' },
-  { name: 'Livewire', category: 'Frontend' },
-  { name: 'AlpineJS', category: 'Frontend' },
-  { name: 'Git', category: 'Tooling' },
-  { name: 'Linux', category: 'Infra' },
-  { name: 'Docker', category: 'Infra' },
+interface TechGroup {
+  category: string;
+  items: string[];
+}
+
+const techGroups: TechGroup[] = [
+  {
+    category: 'Backend',
+    items: ['Laravel', 'PHP', 'Livewire', 'REST APIs'],
+  },
+  {
+    category: 'Frontend',
+    items: ['TailwindCSS', 'Alpine.js', 'JavaScript', 'HTML5'],
+  },
+  {
+    category: 'Database',
+    items: ['MySQL', 'PostgreSQL', 'Redis', 'Database Design'],
+  },
+  {
+    category: 'BI & Analytics',
+    items: ['Power BI', 'DAX', 'SQL Analytics', 'Azure Data'],
+  },
+  {
+    category: 'DevOps & Tools',
+    items: ['Git', 'Linux', 'Docker', 'CI/CD', 'Nginx'],
+  },
 ];
 ---
 
 <section
-  id="stack"
-  class="relative overflow-hidden px-6 py-28 md:py-36 lg:px-10"
+  id="tech"
+  class="relative overflow-hidden px-6 py-28 md:py-36"
 >
-  <div class="container mx-auto">
+  <div class="pointer-events-none absolute inset-0 -z-10">
+    <div class="absolute top-0 left-1/4 h-px w-1/2 bg-gradient-to-r from-transparent via-border to-transparent" />
+  </div>
+  <div class="mx-auto max-w-7xl">
     <SectionHeading
-      index="03"
+      index="04"
       title="Tech Stack"
-      subtitle="Tools and technologies I work with daily."
     />
-    <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
-      {techs.map((tech) => (
-        <div
-          class="tech-item group relative overflow-hidden rounded-xl border border-border p-5 text-center transition-all duration-500 hover:border-accent/20 hover:shadow-lg hover:shadow-accent/5"
-        >
-          <div class="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-b from-accent/5 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-          <span class="text-sm font-semibold text-on-surface transition-colors duration-300 group-hover:text-accent">
-            {tech.name}
-          </span>
-          <p class="mt-1 text-[10px] font-medium uppercase tracking-wider text-on-surface-subtle">
-            {tech.category}
-          </p>
+    <div class="grid gap-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+      {techGroups.map((group) => (
+        <div class="tech-group">
+          <h3 class="text-xs font-semibold uppercase tracking-[0.15em] text-accent">
+            {group.category}
+          </h3>
+          <div class="mt-4 flex flex-wrap gap-2">
+            {group.items.map((item) => (
+              <span class="tech-item rounded-lg border border-border bg-surface-secondary/50 px-3.5 py-2 text-sm font-medium text-on-surface-secondary transition-colors duration-300 hover:border-accent/20 hover:text-on-surface">
+                {item}
+              </span>
+            ))}
+          </div>
         </div>
       ))}
     </div>
@@ -49,11 +68,11 @@ const techs = [
   gsap.registerPlugin(ScrollTrigger);
 
   gsap.from('.tech-item', {
-    scrollTrigger: { trigger: '#stack', start: 'top 80%' },
-    y: 30,
+    scrollTrigger: { trigger: '#tech', start: 'top 80%' },
+    y: 20,
     opacity: 0,
-    duration: 0.5,
-    stagger: 0.04,
+    duration: 0.4,
+    stagger: 0.03,
     ease: 'power2.out',
   });
 </script>

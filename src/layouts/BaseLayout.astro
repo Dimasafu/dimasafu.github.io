@@ -1,6 +1,6 @@
-
 ---
 import '../styles/global.css';
+
 export interface Props {
   title: string;
   description?: string;
@@ -10,14 +10,14 @@ const { title, description } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en" class="">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
-    <title>Portofolio</title>
+    <title>{title}</title>
     {description && (
       <>
         <meta name="description" content={description} />
@@ -32,7 +32,7 @@ const { title, description } = Astro.props;
       rel="stylesheet"
     />
   </head>
-  <body class="bg-surface text-on-surface transition-colors duration-500">
+  <body>
     <slot />
   </body>
 </html>
@@ -45,21 +45,16 @@ const { title, description } = Astro.props;
     if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
       return 'dark';
     }
-    return 'light';
+    return 'dark';
   })();
 
-  if (theme === 'dark') {
-    document.documentElement.classList.add('dark');
-  }
+  document.documentElement.classList.add(theme);
 
   window.__theme = theme;
   window.__setPreferredTheme = (t) => {
     window.__theme = t;
     localStorage.setItem('theme', t);
-    if (t === 'dark') {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
+    document.documentElement.classList.remove('light', 'dark');
+    document.documentElement.classList.add(t);
   };
 </script>
