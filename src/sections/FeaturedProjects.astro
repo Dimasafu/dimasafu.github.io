@@ -1,59 +1,8 @@
 ---
 import SectionHeading from '../components/SectionHeading.astro';
-
-interface Project {
-  index: string;
-  title: string;
-  category: string;
-  tags: string[];
-  challenge: string;
-  solution: string;
-  outcome: string;
-  gradient: string;
-}
-
-const projects: Project[] = [
-  {
-    index: '01',
-    title: 'Healthcare Website Platform',
-    category: 'Healthcare',
-    tags: ['Laravel', 'Livewire', 'MySQL', 'TailwindCSS'],
-    gradient: 'from-blue-500/10 via-blue-400/5 to-transparent',
-    challenge: 'Complex patient data management with strict regulatory compliance requirements. Needed role-based access for doctors, patients, and administrators across multiple healthcare facilities.',
-    solution: 'Built modular multi-tenant architecture with granular permissions and end-to-end encryption. Implemented real-time appointment scheduling and integrated electronic medical record management.',
-    outcome: 'Serving 50,000+ patients across 12 healthcare facilities. Reduced administrative workload by 35% and improved patient satisfaction scores by 28%.',
-  },
-  {
-    index: '02',
-    title: 'Travel & Rental Platform',
-    category: 'Travel Technology',
-    tags: ['Laravel', 'Alpine.js', 'PostgreSQL', 'Redis', 'Stripe'],
-    gradient: 'from-emerald-500/10 via-emerald-400/5 to-transparent',
-    challenge: 'Real-time availability management across hundreds of vendors. Complex booking conflicts, payment splitting between multiple parties, and dynamic pricing models.',
-    solution: 'Event-driven architecture with queue-based booking system. Integrated Stripe Connect for marketplace payments and built real-time availability caching with Redis.',
-    outcome: '3x increase in booking conversion rate. 200+ vendors onboarded in the first 6 months. Platform processes $2M+ in monthly transactions.',
-  },
-  {
-    index: '03',
-    title: 'Gym Management SaaS',
-    category: 'Fitness Technology',
-    tags: ['Laravel', 'Livewire', 'MySQL', 'Filament', 'REST API'],
-    gradient: 'from-violet-500/10 via-violet-400/5 to-transparent',
-    challenge: 'Complex membership management with multiple tiers, scheduling conflicts across trainers and facilities, and automated payment tracking with invoice generation.',
-    solution: 'Built comprehensive admin panel using Filament. Automated billing with recurring invoice generation and real-time schedule conflict detection. RESTful API for mobile app integration.',
-    outcome: '200+ gyms onboarded to the platform. 40% reduction in administrative overhead for gym owners. 99.9% uptime since launch.',
-  },
-  {
-    index: '04',
-    title: 'Power BI Operational Dashboards',
-    category: 'Business Intelligence',
-    tags: ['Power BI', 'DAX', 'SQL', 'Azure', 'ETL'],
-    gradient: 'from-amber-500/10 via-amber-400/5 to-transparent',
-    challenge: 'Data fragmentation across multiple departments with inconsistent reporting. Leadership lacked real-time visibility into key operational metrics.',
-    solution: 'Built unified data model with automated ETL pipelines. Designed interactive dashboards with drill-through capabilities and real-time data refresh using Power BI Premium.',
-    outcome: '60% faster strategic decision-making. Identified $500K in annual operational savings. Replaced manual reporting with automated real-time dashboards used by C-suite.',
-  },
-];
+import ProjectCard from '../components/ProjectCard.astro';
+import ProjectModal from '../components/ProjectModal.astro';
+import { projects } from '../data/projects';
 ---
 
 <section
@@ -69,72 +18,17 @@ const projects: Project[] = [
       title="Featured Projects"
     />
 
-    <div class="space-y-28 lg:space-y-36">
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-2 xl:gap-8">
       {projects.map((project, i) => (
-        <article
-          class="project-card grid gap-8 lg:grid-cols-2 lg:gap-16"
-          data-reveal
-        >
-          <div class={`${i % 2 === 1 ? 'lg:order-2' : ''}`}>
-            <div class="relative aspect-[16/10] overflow-hidden rounded-2xl border border-border bg-surface-secondary">
-              <div class={`absolute inset-0 bg-gradient-to-br ${project.gradient}`} />
-              <div class="absolute inset-0 flex items-center justify-center">
-                <span class="text-5xl font-bold tracking-tight text-on-surface/5 sm:text-6xl md:text-7xl">
-                  {project.category}
-                </span>
-              </div>
-              <div class="absolute inset-0 bg-grid opacity-30 dark:opacity-30" />
-              <div class="absolute bottom-5 left-5 flex h-10 w-10 items-center justify-center rounded-xl bg-surface/60 backdrop-blur-sm">
-                <span class="text-sm font-bold text-accent">{project.index}</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="flex flex-col justify-center">
-            <h3 class="text-2xl font-bold tracking-tight text-on-surface sm:text-3xl">
-              {project.title}
-            </h3>
-
-            <div class="mt-4 flex flex-wrap gap-2">
-              {project.tags.map((tag) => (
-                <span class="rounded-full border border-border bg-surface-secondary/50 px-3 py-1 text-xs font-medium text-on-surface-secondary">
-                  {tag}
-                </span>
-              ))}
-            </div>
-
-            <div class="mt-8 space-y-6">
-              <div>
-                <h4 class="text-xs font-semibold uppercase tracking-[0.15em] text-accent">
-                  Challenge
-                </h4>
-                <p class="mt-2 text-sm leading-relaxed text-on-surface-secondary">
-                  {project.challenge}
-                </p>
-              </div>
-              <div>
-                <h4 class="text-xs font-semibold uppercase tracking-[0.15em] text-accent">
-                  Solution
-                </h4>
-                <p class="mt-2 text-sm leading-relaxed text-on-surface-secondary">
-                  {project.solution}
-                </p>
-              </div>
-              <div>
-                <h4 class="text-xs font-semibold uppercase tracking-[0.15em] text-accent">
-                  Outcome
-                </h4>
-                <p class="mt-2 text-sm leading-relaxed text-on-surface">
-                  {project.outcome}
-                </p>
-              </div>
-            </div>
-          </div>
-        </article>
+        <ProjectCard project={project} index={i} />
       ))}
     </div>
   </div>
 </section>
+
+<ProjectModal projects={projects} />
+
+<div id="projects-data" data-projects={JSON.stringify(projects)} hidden></div>
 
 <script>
   import { gsap } from 'gsap';
@@ -142,18 +36,27 @@ const projects: Project[] = [
 
   gsap.registerPlugin(ScrollTrigger);
 
+  document.querySelectorAll('.project-card').forEach((card) => {
+    card.addEventListener('click', () => {
+      const idx = parseInt(card.dataset.projectIndex);
+      if (typeof window.openProjectModal === 'function') {
+        window.openProjectModal(idx);
+      }
+    });
+  });
+
   gsap.utils.toArray('.project-card').forEach((card, i) => {
     gsap.from(card, {
-      y: 80,
+      y: 60,
       opacity: 0,
-      duration: 1,
+      duration: 0.8,
       ease: 'power3.out',
       scrollTrigger: {
         trigger: card,
-        start: 'top 80%',
+        start: 'top 85%',
         toggleActions: 'play none none reverse',
       },
-      delay: i * 0.15,
+      delay: i * 0.1,
     });
   });
 </script>

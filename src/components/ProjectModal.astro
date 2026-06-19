@@ -1,0 +1,270 @@
+---
+import type { Project } from '../data/projects';
+
+interface Props {
+  projects: Project[];
+}
+
+const { projects } = Astro.props;
+---
+
+<div
+  id="project-modal"
+  class="fixed inset-0 z-[100] hidden"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Project case study"
+>
+  <div
+    id="modal-overlay"
+    class="absolute inset-0 bg-surface/80 backdrop-blur-xl"
+  />
+
+  <div
+    id="modal-container"
+    class="relative mx-auto flex h-full max-w-5xl flex-col overflow-y-auto px-6 py-16 md:px-10"
+  >
+    <button
+      id="modal-close-btn"
+      class="sticky top-0 z-10 ml-auto flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-xl border border-border bg-surface/60 backdrop-blur-sm transition-all duration-300 hover:bg-surface-secondary"
+      aria-label="Close modal"
+    >
+      <svg class="h-5 w-5 text-on-surface" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+        <path d="M18 6L6 18M6 6l12 12" />
+      </svg>
+    </button>
+
+    <div id="modal-body">
+      <h2
+        id="modal-title"
+        class="text-3xl font-bold tracking-tight text-on-surface sm:text-4xl"
+      >
+      </h2>
+
+      <div id="modal-gallery" class="mt-8">
+        <div class="relative aspect-video overflow-hidden rounded-2xl border border-border bg-surface-secondary">
+          <img
+            id="modal-main-image"
+            class="h-full w-full object-cover"
+            alt=""
+          />
+        </div>
+        <div
+          id="modal-thumbnails"
+          class="mt-4 flex gap-3 overflow-x-auto pb-2"
+        >
+        </div>
+      </div>
+
+      <div class="mt-12 grid gap-10 lg:grid-cols-3">
+        <div class="lg:col-span-1">
+          <h3 class="text-xs font-semibold uppercase tracking-[0.15em] text-accent">
+            Overview
+          </h3>
+          <p
+            id="modal-description"
+            class="mt-3 text-sm leading-relaxed text-on-surface-secondary"
+          >
+          </p>
+          <div class="mt-6">
+            <h3 class="text-xs font-semibold uppercase tracking-[0.15em] text-accent">
+              Tech Stack
+            </h3>
+            <div
+              id="modal-techs"
+              class="mt-3 flex flex-wrap gap-2"
+            >
+            </div>
+          </div>
+        </div>
+        <div class="space-y-10 lg:col-span-2">
+          <div>
+            <h3 class="text-xs font-semibold uppercase tracking-[0.15em] text-accent">
+              Challenge
+            </h3>
+            <p
+              id="modal-challenge"
+              class="mt-3 text-sm leading-relaxed text-on-surface-secondary"
+            >
+            </p>
+          </div>
+          <div>
+            <h3 class="text-xs font-semibold uppercase tracking-[0.15em] text-accent">
+              Solution
+            </h3>
+            <p
+              id="modal-solution"
+              class="mt-3 text-sm leading-relaxed text-on-surface-secondary"
+            >
+            </p>
+          </div>
+          <div>
+            <h3 class="text-xs font-semibold uppercase tracking-[0.15em] text-accent">
+              Impact
+            </h3>
+            <p
+              id="modal-impact"
+              class="mt-3 text-base font-medium leading-relaxed text-on-surface"
+            >
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  import { gsap } from 'gsap';
+
+  const modal = document.getElementById('project-modal');
+  const overlay = document.getElementById('modal-overlay');
+  const container = document.getElementById('modal-container');
+  const closeBtn = document.getElementById('modal-close-btn');
+  const body = document.getElementById('modal-body');
+  const title = document.getElementById('modal-title');
+  const mainImage = document.getElementById('modal-main-image');
+  const thumbnails = document.getElementById('modal-thumbnails');
+  const description = document.getElementById('modal-description');
+  const techs = document.getElementById('modal-techs');
+  const challenge = document.getElementById('modal-challenge');
+  const solution = document.getElementById('modal-solution');
+  const impact = document.getElementById('modal-impact');
+
+  let activeIndex = 0;
+  let currentProject = null;
+  let isOpen = false;
+  let tl = null;
+
+  function populateProject(project) {
+    currentProject = project;
+    activeIndex = 0;
+
+    title.textContent = project.title;
+    description.textContent = project.description;
+    challenge.textContent = project.challenge;
+    solution.textContent = project.solution;
+    impact.textContent = project.impact;
+
+    techs.innerHTML = project.technologies
+      .map(
+        (t) =>
+          `<span class="rounded-full border border-border bg-surface-secondary/50 px-3 py-1 text-xs font-medium text-on-surface-secondary">${t}</span>`
+      )
+      .join('');
+
+    renderGallery(project.screenshots);
+  }
+
+  function renderGallery(screenshots) {
+    mainImage.src = screenshots[0];
+    mainImage.alt = `Screenshot 1`;
+
+    thumbnails.innerHTML = screenshots
+      .map(
+        (src, i) =>
+          `<button class="modal-thumb shrink-0 overflow-hidden rounded-xl border-2 transition-all duration-300 ${
+            i === activeIndex
+              ? 'border-accent'
+              : 'border-border hover:border-accent/50'
+          }" data-index="${i}">
+            <img src="${src}" alt="Thumbnail ${i + 1}" class="h-16 w-24 object-cover md:h-20 md:w-32" loading="lazy" />
+          </button>`
+      )
+      .join('');
+
+    thumbnails.querySelectorAll('.modal-thumb').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const idx = parseInt(btn.dataset.index);
+        setActiveImage(idx);
+      });
+    });
+  }
+
+  function setActiveImage(index) {
+    if (!currentProject) return;
+    activeIndex = index;
+    mainImage.src = currentProject.screenshots[index];
+    mainImage.alt = `Screenshot ${index + 1}`;
+
+    thumbnails.querySelectorAll('.modal-thumb').forEach((btn) => {
+      const idx = parseInt(btn.dataset.index);
+      if (idx === index) {
+        btn.classList.remove('border-border', 'hover:border-accent/50');
+        btn.classList.add('border-accent');
+      } else {
+        btn.classList.remove('border-accent');
+        btn.classList.add('border-border', 'hover:border-accent/50');
+      }
+    });
+  }
+
+  function openModal(projectIndex) {
+    if (isOpen) return;
+    isOpen = true;
+
+    const el = document.getElementById('projects-data');
+    const projectsData = JSON.parse(el.dataset.projects);
+    populateProject(projectsData[projectIndex]);
+
+    modal.classList.remove('hidden');
+
+    gsap.set(overlay, { opacity: 0 });
+    gsap.set(container, { scale: 0.95, opacity: 0 });
+
+    tl = gsap.timeline({
+      onComplete: () => {
+        document.body.style.overflow = 'hidden';
+        document.documentElement.style.overflow = 'hidden';
+      },
+    });
+
+    tl.to(overlay, { opacity: 1, duration: 0.3, ease: 'power2.out' });
+    tl.to(
+      container,
+      { scale: 1, opacity: 1, duration: 0.5, ease: 'power3.out' },
+      '-=0.15'
+    );
+  }
+
+  function closeModal() {
+    if (!isOpen) return;
+    isOpen = false;
+
+    if (tl) tl.kill();
+
+    gsap.to(container, {
+      scale: 0.95,
+      opacity: 0,
+      duration: 0.2,
+      ease: 'power2.in',
+    });
+    gsap.to(overlay, {
+      opacity: 0,
+      duration: 0.2,
+      ease: 'power2.in',
+      onComplete: () => {
+        modal.classList.add('hidden');
+        document.body.style.overflow = '';
+        document.documentElement.style.overflow = '';
+        currentProject = null;
+      },
+    });
+  }
+
+  closeBtn.addEventListener('click', closeModal);
+
+  overlay.addEventListener('click', closeModal);
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && isOpen) {
+      closeModal();
+    }
+  });
+
+  container.addEventListener('click', (e) => {
+    e.stopPropagation();
+  });
+
+  window.openProjectModal = openModal;
+</script>

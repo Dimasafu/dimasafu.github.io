@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a0a0a"/>
+      <stop offset="50%" style="stop-color:#111111"/>
+      <stop offset="100%" style="stop-color:#0a0a0a"/>
+    </linearGradient>
+    <linearGradient id="glow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#10b981;stop-opacity:0.15"/>
+      <stop offset="100%" style="stop-color:#10b981;stop-opacity:0"/>
+    </linearGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#ffffff" stroke-opacity="0.03" stroke-width="0.5"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="800" fill="url(#bg)"/>
+  <rect width="1200" height="800" fill="url(#glow)"/>
+  <rect width="1200" height="800" fill="url(#grid)"/>
+  <rect x="60" y="60" width="1080" height="680" rx="12" fill="none" stroke="#222222" stroke-width="1"/>
+  <rect x="60" y="60" width="1080" height="36" rx="12" fill="#111111"/>
+  <circle cx="84" cy="78" r="5" fill="#ef4444"/>
+  <circle cx="102" cy="78" r="5" fill="#eab308"/>
+  <circle cx="120" cy="78" r="5" fill="#22c55e"/>
+  <text x="600" y="380" font-family="system-ui,-apple-system,sans-serif" font-size="28" font-weight="700" fill="#f5f5f5" text-anchor="middle" letter-spacing="-0.5">Booking System</text>
+  <text x="600" y="420" font-family="system-ui,-apple-system,sans-serif" font-size="14" font-weight="400" fill="#666666" text-anchor="middle">Real-time Reservation Engine</text>
+  <rect x="540" y="500" width="120" height="2" rx="1" fill="#10b981" opacity="0.5"/>
+</svg>
