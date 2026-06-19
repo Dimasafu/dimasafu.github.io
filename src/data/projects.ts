@@ -65,7 +65,7 @@ export const projects: Project[] = [
       '200+ gyms onboarded to the platform. 40% reduction in administrative overhead for gym owners. 99.9% uptime since launch.',
   },
   {
-    title: 'Power BI Operational Dashboards',
+    title: 'Power BI Dashboards & Power Apps',
     description:
       'Enterprise business intelligence dashboards providing real-time operational insights, KPI tracking, and data-driven decision making for executive leadership.',
     technologies: ['Power BI', 'DAX', 'SQL', 'Azure', 'ETL'],
